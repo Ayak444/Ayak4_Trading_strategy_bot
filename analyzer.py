@@ -31,7 +31,7 @@ class TechnicalAnalyzer:
             if (l.iloc[i] - min(o.iloc[i], c.iloc[i])) > body.iloc[i]*2: sig.append("錘子線")
             if c.iloc[i-1] < o.iloc[i-1] and c.iloc[i] > o.iloc[i] and c.iloc[i] > (c.iloc[i-1] + (o.iloc[i-1]-c.iloc[i-1])/2): sig.append("刺透")
             if c.iloc[i-1] < o.iloc[i-1] and c.iloc[i] > o.iloc[i] and c.iloc[i] > o.iloc[i-1] and o.iloc[i] < c.iloc[i-1]: sig.append("吞噬")
-            patterns.append(",".join(sig) if sig else None)
+            patterns.append(",".join(sig) if sig else "")
         df['Pattern'] = patterns
         return df
 
