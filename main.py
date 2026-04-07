@@ -46,5 +46,4 @@ def generate_report():
     return {"status": "success", "data": results, "fx": fx_note}
 
 if __name__ == "__main__":
-    keep_alive()
-    uvicorn.run(app, host="192.168.213.90", port=8080)
+    uvicorn.run(app, host="0.0.0.0", port=8080)
