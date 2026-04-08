@@ -19,11 +19,10 @@ class TargetItem(BaseModel):
     cost: float
     shares: int
 
-# --- 新增這個端點來取代原本的 keep_alive ---
+# 防休眠的根目錄測試端點
 @app.get("/")
 def home():
     return {"status": "Bot is alive and running!"}
-# ----------------------------------------
 
 @app.post("/analyze")
 def analyze_custom(targets: List[TargetItem]):
@@ -41,7 +40,7 @@ def analyze_custom(targets: List[TargetItem]):
         df = TechnicalAnalyzer.calculate_indicators(df)
         advice, sigs, score, pl = StrategyEngine.evaluate(df, t, chip_data, market_df, fx_val)
         sl, note = StrategyEngine.get_exit_point(df, t.cost)
-        val = TechnicalAnalyzer.get_valuation(obj, df, df['Close'].iloc[-1]) # 注意這裡改叫 get_valuation
+        val = TechnicalAnalyzer.get_valuation(obj, df, df['Close'].iloc[-1])
         
         results.append({
             "name": t.name, "ticker": t.id, "price": float(df['Close'].iloc[-1]),
@@ -51,6 +50,5 @@ def analyze_custom(targets: List[TargetItem]):
     return {"status": "success", "data": results, "fx": fx_note}
 
 if __name__ == "__main__":
-    # Render 會自動提供 PORT 環境變數，如果沒有才退回使用 8080
     port = int(os.environ.get("PORT", 8080))
     uvicorn.run(app, host="0.0.0.0", port=port)
